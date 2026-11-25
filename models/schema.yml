@@ -2,10 +2,49 @@ version: 2
 sources:
   - name: raw
     schema: gz_raw_data
+    description: "dataset"
     tables:
       - name: sales
         identifier: raw_gz_sales
+        description: "sipariş bazında ürün satışları"
+        columns:
+          - name: date_date
+            description: "Satış tarihi"
+          - name: orders_id
+            description: "Sipariş numarası"
+          - name: pdt_id
+            description: "ürün kimliği"
+          - name: revenue
+            description: "satırın cirosu"
+          - name: quantity
+            description: "satılan adet"
+        tests:
+          - unique:
+               column_name: "(orders_id || '-' || pdt_id)"
+          
       - name: product
         identifier: raw_gz_product
+        description: "ürün idsi ve ürün maliyeti"
+        columns:
+          - name: products_id
+            description: "Ürün numarası , primary key"
+            tests:
+              - unique
+              - not_null  
+          - name: purchase_price
+            description: "Ürün maliyeti"
       - name: ship
         identifier: raw_gz_ship
+        description: "sipariş bazında lojistik maliyetler"
+        columns:
+          - name: orders_id
+            description: "sipariş numarası"
+            tests:
+              - unique
+              - not_null
+          - name: shipping_fee
+            description: "Müşteriden alınan kargo ücreti"
+          - name: logcost
+            description: "Lojistik maliyet"
+          - name: ship_cost
+            description: "kargo maliyeti"
